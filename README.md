@@ -7,5 +7,9 @@ This branch contains the initial implementation of the Product Management applic
 - Add new product (basic).
 - Delete product.
 
-## Screenshot
-![Atelier 1 Screenshot](screenshots/atelier1.png)
+## Screenshots
+### Home Screen
+![Home Screen](screenshots/home.png)
+
+### Add Product Screen
+![Add Product Screen](screenshots/add.png)
