@@ -1,16 +1,11 @@
-# atelier_produits
+# Atelier 1: Basic Product Management
 
-A new Flutter project.
+This branch contains the initial implementation of the Product Management application.
 
-## Getting Started
+## Features
+- List of products.
+- Add new product (basic).
+- Delete product.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshot
+![Atelier 1 Screenshot](screenshots/atelier1.png)
