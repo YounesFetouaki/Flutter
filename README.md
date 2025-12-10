@@ -9,7 +9,7 @@ This branch contains the initial implementation of the Product Management applic
 
 ## Screenshots
 ### Home Screen
-![Home Screen](screenshots/home.png)
+![Home Screen](screenshots/atelier1_home.png)
 
 ### Add Product Screen
-![Add Product Screen](screenshots/add.png)
+![Add Product Screen](screenshots/atelier1_add.png)
