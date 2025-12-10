@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import 'add_product_screen.dart';
+import '../widgets/app_drawer.dart';
+import './product_detail_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
   @override
@@ -48,25 +50,55 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atelier 1: Produits'),
+        title: Text('Atelier 3: Navigation'),
       ),
+      drawer: AppDrawer(),
       body: ListView.builder(
         itemCount: _products.length,
         itemBuilder: (ctx, i) => Card(
-          margin: EdgeInsets.all(10),
+          elevation: 5,
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
           child: ListTile(
             leading: CircleAvatar(
+              radius: 30,
               backgroundImage: NetworkImage(_products[i].imageUrl),
-            ),
-            title: Text(_products[i].title),
-            subtitle: Text('\$${_products[i].price}'),
-            trailing: IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                setState(() {
-                  _products.removeAt(i);
-                });
+              onBackgroundImageError: (exception, stackTrace) {
+                // Handle image error
               },
+            ),
+            title: Text(
+              _products[i].title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              _products[i].description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                ProductDetailScreen.routeName,
+                arguments: _products[i],
+              );
+            },
+            trailing: Container(
+              width: 100,
+              child: Row(
+                children: <Widget>[
+                  Text('\$${_products[i].price}'),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
+                    onPressed: () {
+                      setState(() {
+                        _products.removeAt(i);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Product deleted!')),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
