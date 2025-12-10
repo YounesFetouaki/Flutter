@@ -56,7 +56,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-             return Center(child: Text('An error occurred!'));
+             return Center(child: Text('An error occurred: ${snapshot.error}'));
           } else {
             final products = snapshot.data ?? [];
             if (products.isEmpty) {

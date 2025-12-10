@@ -1,16 +1,17 @@
-# atelier_produits
+# Atelier 4.2: Synchronisation Cloud avec Firebase
 
-A new Flutter project.
+Cette branche représente la version finale de l'application, intégrant la synchronisation en temps réel avec Firebase Firestore.
 
-## Getting Started
+## Fonctionnalités
+- **Cloud Firestore**: Stockage des données produits dans le cloud (NoSQL).
+- **Temps Réel**: Les mises à jour sont reflétées instantanément sur tous les appareils connectés.
+- **Streams**: Utilisation de `StreamBuilder` pour une interface réactive aux changements de données.
+- **Gestion d'erreurs**: Gestion robuste des erreurs de connexion et d'écriture.
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+### Liste des Produits (Firebase)
+![Home Screen](screenshots/main_home.png)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Ajout de Produit (Firebase)
+![Add Product Screen](screenshots/main_add.png)
