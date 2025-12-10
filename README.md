@@ -10,7 +10,7 @@ This branch improves the user experience with form validation and better UI hand
 
 ## Screenshots
 ### Home Screen
-![Home Screen](screenshots/home.png)
+![Home Screen](screenshots/atelier2_home.png)
 
 ### Add Product Screen (With Validation)
-![Add Product Screen](screenshots/add.png)
+![Add Product Screen](screenshots/atelier2_add.png)
