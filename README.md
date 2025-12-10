@@ -1,16 +1,11 @@
-# atelier_produits
+# Atelier 2: Validation & Refinements
 
-A new Flutter project.
+This branch improves the user experience with form validation and better UI handling.
 
-## Getting Started
+## Features
+- Form validation (required fields, URL regex).
+- Image preview in Add Product screen.
+- Undo deletion functionality.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshot
+![Atelier 2 Screenshot](screenshots/atelier2.png)
