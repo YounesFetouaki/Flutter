@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../helpers/database_helper.dart';
+import '../helpers/firestore_helper.dart';
 
 class AddProductScreen extends StatefulWidget {
   @override
@@ -65,8 +65,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
       imageUrl: _editedProduct.imageUrl,
     );
 
-    // Insert into DB
-    await DatabaseHelper.instance.insertProduct(newProduct);
+    // Insert into Firestore
+    await FirestoreHelper.addProduct(newProduct);
 
     Navigator.of(context).pop(newProduct);
   }

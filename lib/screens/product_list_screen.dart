@@ -3,7 +3,7 @@ import '../models/product.dart';
 import 'add_product_screen.dart';
 import '../widgets/app_drawer.dart';
 import './product_detail_screen.dart';
-import '../helpers/database_helper.dart';
+import '../helpers/firestore_helper.dart';
 
 class ProductListScreen extends StatefulWidget {
   @override
@@ -11,52 +11,30 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  late Future<List<Product>> _productsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshProducts();
-  }
-
-  void _refreshProducts() {
-    setState(() {
-      _productsFuture = DatabaseHelper.instance.getProducts();
-    });
-  }
 
   void _navigateToAddProductScreen(BuildContext context) async {
-    final result = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => AddProductScreen(),
       ),
     );
-
-    if (result != null && result is Product) {
-      // In this version, AddProductScreen handles insertion,
-      // so we just need to refresh. If AddProductScreen returned the product
-      // but didn't save (which was previous logic), we'd save here.
-      // Current design: AddProductScreen saves, then returns.
-      // Actually previous design only returned. We need to update AddProductScreen too.
-      // But for list screen, let's assume we refresh.
-       _refreshProducts();
-    }
+    // No need to refresh manually, StreamBuilder handles it.
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atelier 4.1: SQLite'),
+        title: Text('Atelier 4.2: Firestore'),
       ),
       drawer: AppDrawer(),
-      body: FutureBuilder<List<Product>>(
-        future: _productsFuture,
+      body: StreamBuilder<List<Product>>(
+        stream: FirestoreHelper.productsStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-             return Center(child: Text('An error occurred!'));
+             return Center(child: Text('An error occurred: ${snapshot.error}'));
           } else {
             final products = snapshot.data ?? [];
             if (products.isEmpty) {
@@ -97,9 +75,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           icon: Icon(Icons.delete,
                               color: Theme.of(context).colorScheme.error),
                           onPressed: () async {
-                            await DatabaseHelper.instance
-                                .deleteProduct(products[i].id);
-                            _refreshProducts();
+                            await FirestoreHelper.deleteProduct(products[i].id);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Product deleted!')),
                             );
