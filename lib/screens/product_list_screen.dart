@@ -3,6 +3,7 @@ import '../models/product.dart';
 import 'add_product_screen.dart';
 import '../widgets/app_drawer.dart';
 import './product_detail_screen.dart';
+import '../helpers/database_helper.dart';
 
 class ProductListScreen extends StatefulWidget {
   @override
@@ -10,27 +11,17 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  // In-memory list of products
-  final List<Product> _products = [
-    Product(
-      id: 'p1',
-      title: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      price: 29.99,
-      imageUrl: 'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Trousers',
-      description: 'A nice pair of trousers.',
-      price: 59.99,
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-    ),
-  ];
+  late Future<List<Product>> _productsFuture;
 
-  void _addProduct(Product product) {
+  @override
+  void initState() {
+    super.initState();
+    _refreshProducts();
+  }
+
+  void _refreshProducts() {
     setState(() {
-      _products.add(product);
+      _productsFuture = DatabaseHelper.instance.getProducts();
     });
   }
 
@@ -42,7 +33,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
 
     if (result != null && result is Product) {
-      _addProduct(result);
+      // In this version, AddProductScreen handles insertion,
+      // so we just need to refresh. If AddProductScreen returned the product
+      // but didn't save (which was previous logic), we'd save here.
+      // Current design: AddProductScreen saves, then returns.
+      // Actually previous design only returned. We need to update AddProductScreen too.
+      // But for list screen, let's assume we refresh.
+       _refreshProducts();
     }
   }
 
@@ -50,58 +47,72 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Atelier 3: Navigation'),
+        title: Text('Atelier 4.1: SQLite'),
       ),
       drawer: AppDrawer(),
-      body: ListView.builder(
-        itemCount: _products.length,
-        itemBuilder: (ctx, i) => Card(
-          elevation: 5,
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(_products[i].imageUrl),
-              onBackgroundImageError: (exception, stackTrace) {
-                // Handle image error
-              },
-            ),
-            title: Text(
-              _products[i].title,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              _products[i].description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            onTap: () {
-              Navigator.of(context).pushNamed(
-                ProductDetailScreen.routeName,
-                arguments: _products[i],
-              );
-            },
-            trailing: Container(
-              width: 100,
-              child: Row(
-                children: <Widget>[
-                  Text('\$${_products[i].price}'),
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
-                    onPressed: () {
-                      setState(() {
-                        _products.removeAt(i);
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Product deleted!')),
-                      );
-                    },
+      body: FutureBuilder<List<Product>>(
+        future: _productsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+             return Center(child: Text('An error occurred!'));
+          } else {
+            final products = snapshot.data ?? [];
+            if (products.isEmpty) {
+               return Center(child: Text('No products added yet!'));
+            }
+            return ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (ctx, i) => Card(
+                elevation: 5,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(products[i].imageUrl),
+                    onBackgroundImageError: (exception, stackTrace) {},
                   ),
-                ],
+                  title: Text(
+                    products[i].title,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    products[i].description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      ProductDetailScreen.routeName,
+                      arguments: products[i],
+                    );
+                  },
+                  trailing: Container(
+                    width: 100,
+                    child: Row(
+                      children: <Widget>[
+                        Text('\$${products[i].price}'),
+                        IconButton(
+                          icon: Icon(Icons.delete,
+                              color: Theme.of(context).colorScheme.error),
+                          onPressed: () async {
+                            await DatabaseHelper.instance
+                                .deleteProduct(products[i].id);
+                            _refreshProducts();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Product deleted!')),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

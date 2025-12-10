@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import '../helpers/database_helper.dart';
 
 class AddProductScreen extends StatefulWidget {
   @override
@@ -47,7 +48,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
-  void _saveForm() {
+  void _saveForm() async {
     final isValid = _form.currentState?.validate();
     if (isValid == null || !isValid) {
       return;
@@ -63,6 +64,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       price: _editedProduct.price,
       imageUrl: _editedProduct.imageUrl,
     );
+
+    // Insert into DB
+    await DatabaseHelper.instance.insertProduct(newProduct);
 
     Navigator.of(context).pop(newProduct);
   }
