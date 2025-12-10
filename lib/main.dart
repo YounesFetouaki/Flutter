@@ -12,10 +12,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GeoTracker Pro',
+      title: 'Pharmacies Map',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.indigo,
+          seedColor: Colors.teal, // Kept a different color (Teal) as a code change
         ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,

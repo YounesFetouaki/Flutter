@@ -11,20 +11,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _index = 0;
-  final pages = const [MapPage(), ListPage(), SettingsPage()];
+  int _currentTab = 0;
+  
+  final List<Widget> _screens = const [
+    MapPage(),
+    ListPage(),
+    SettingsPage()
+  ];
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentTab = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[_index],
+      body: _screens[_currentTab],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
+        currentIndex: _currentTab,
+        onTap: _onTabTapped,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
-          //BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.map_outlined), label: 'Carte'),
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Liste'),
         ],
       ),
     );
