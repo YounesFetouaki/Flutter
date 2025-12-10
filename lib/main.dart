@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import './screens/product_list_screen.dart';
-import './screens/product_detail_screen.dart';
+import 'pages/post_list_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Atelier 1',
+      title: 'StoreManager API',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey, // Changed color to BlueGrey
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        useMaterial3: true,
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.black87,
+          foregroundColor: Colors.white,
+        ),
       ),
-      home: ProductListScreen(),
-      routes: {
-        ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-      },
+      home: const PostListPage(),
     );
   }
 }
