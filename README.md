@@ -1,16 +1,11 @@
-# atelier_produits
+# Atelier 3: Navigation & Details
 
-A new Flutter project.
+This branch adds navigation capabilities and a detailed view for products.
 
-## Getting Started
+## Features
+- Product Detail Screen.
+- App Drawer for navigation.
+- Named routes in `main.dart`.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Screenshot
+![Atelier 3 Screenshot](screenshots/atelier3.png)
