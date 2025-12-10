@@ -61,11 +61,31 @@ class _ProductListScreenState extends State<ProductListScreen> {
             title: Text(_products[i].title),
             subtitle: Text('\$${_products[i].price}'),
             trailing: IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
+              icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.error),
               onPressed: () {
+                final removedProduct = _products[i];
+                final removedIndex = i;
                 setState(() {
                   _products.removeAt(i);
                 });
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Product deleted!',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    duration: Duration(seconds: 2),
+                    action: SnackBarAction(
+                      label: 'UNDO',
+                      onPressed: () {
+                        setState(() {
+                          _products.insert(removedIndex, removedProduct);
+                        });
+                      },
+                    ),
+                  ),
+                );
               },
             ),
           ),
