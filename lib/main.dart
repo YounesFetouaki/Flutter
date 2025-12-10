@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'StoreManager API',
+      title: 'Atelier 1',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.blueGrey, // Changed color to BlueGrey
       ),
       home: ProductListScreen(),
       routes: {
