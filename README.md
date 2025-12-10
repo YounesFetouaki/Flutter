@@ -1,11 +1,18 @@
 # Atelier 3: Navigation & Details
 
-This branch adds navigation capabilities and a detailed view for products.
+This branch implements navigation using named routes, a side drawer, and a product detail screen.
 
 ## Features
-- Product Detail Screen.
-- App Drawer for navigation.
-- Named routes in `main.dart`.
+- **Navigation Drawer**: Access different app sections.
+- **Product Detail Screen**: View product descriptions and prices.
+- **Named Routes**: Clean navigation management in `main.dart`.
 
-## Screenshot
-![Atelier 3 Screenshot](screenshots/atelier3.png)
+## Screenshots
+### Home Screen
+![Home Screen](screenshots/atelier3_home.png)
+
+### App Drawer
+![App Drawer](screenshots/atelier3_drawer.png)
+
+### Product Detail Screen
+![Product Detail](screenshots/atelier3_detail.png)
